@@ -17,5 +17,6 @@ class EnterpriseAbility
     can :read, Industry
     can :read, Prefecture
     can :read, EmploymentStatus
+    can [:read, :create], Room, company: { id: employee.company_id }
   end
 end
