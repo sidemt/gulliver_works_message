@@ -4,9 +4,7 @@ module V1
   class RoomsController < ApplicationController
     # account_id の下にネストされるパス
     load_and_authorize_resource :account
-    load_and_authorize_resource :room, through: :account, except: :show
-    # Room の id を指定してアクセスするパス
-    load_and_authorize_resource only: :show
+    load_and_authorize_resource :room, through: :account, shallow: true
 
     def index
       render json: @rooms

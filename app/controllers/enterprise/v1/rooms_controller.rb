@@ -5,9 +5,7 @@ module Enterprise
     class RoomsController < EnterpriseController
       # company_id の下にネストされるパス
       load_and_authorize_resource :company, except: :show
-      load_and_authorize_resource :room, through: :company, except: :show
-      # Room の id を指定してアクセスするパス
-      load_and_authorize_resource only: :show
+      load_and_authorize_resource :room, through: :company, shallow: true
 
       def index
         render json: @rooms
