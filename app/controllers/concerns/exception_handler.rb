@@ -5,7 +5,6 @@ module ExceptionHandler
   included do
     rescue_from StandardError do |e|
       Rails.logger.fatal e.full_message
-      Raven.capture_exception(e)
       json_response({ errors: [{ description: e.message, status: 500 }] }, :internal_server_error)
     end
 
@@ -14,7 +13,6 @@ module ExceptionHandler
     end
 
     rescue_from ActiveRecord::RecordInvalid do |e|
-      Raven.capture_exception(e)
       json_response({ errors: [{ description: e.message, status: 422 }] }, :unprocessable_entity)
     end
 
@@ -26,7 +24,6 @@ module ExceptionHandler
     end
 
     rescue_from ActionController::ParameterMissing do |e|
-      Raven.capture_exception(e)
       json_response({ errors: [{ description: e.message, status: 422 }] }, :unprocessable_entity)
     end
 
