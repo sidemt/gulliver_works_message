@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_102553) do
+ActiveRecord::Schema.define(version: 2021_05_09_115646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -119,8 +119,20 @@ ActiveRecord::Schema.define(version: 2020_11_09_102553) do
     t.index ["name"], name: "index_prefectures_on_name", unique: true
   end
 
+  create_table "rooms", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "トークルーム", force: :cascade do |t|
+    t.uuid "account_id"
+    t.uuid "company_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id", "company_id"], name: "index_rooms_on_account_id_and_company_id", unique: true
+    t.index ["account_id"], name: "index_rooms_on_account_id"
+    t.index ["company_id"], name: "index_rooms_on_company_id"
+  end
+
   add_foreign_key "employees", "companies"
   add_foreign_key "industries", "industry_categories"
   add_foreign_key "occupation_sub_categories", "occupation_main_categories"
   add_foreign_key "occupations", "occupation_sub_categories"
+  add_foreign_key "rooms", "accounts"
+  add_foreign_key "rooms", "companies"
 end

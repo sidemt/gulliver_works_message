@@ -15,5 +15,6 @@ class Ability
     can :read, Industry
     can :read, Prefecture
     can :read, EmploymentStatus
+    can [:read, :create], Room, account: { id: account.id }
   end
 end

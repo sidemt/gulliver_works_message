@@ -2,6 +2,7 @@
 # Company
 class Company < ApplicationRecord
   has_many :employees, dependent: :destroy
+  has_many :rooms, dependent: :nullify
 
   validates :name, uniqueness: true, presence: true
   validates :name_kana,

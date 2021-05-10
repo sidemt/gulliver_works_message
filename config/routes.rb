@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   end
 
   namespace :v1 do
-    resources :accounts, only: %i[index show destroy]
+    resources :accounts, only: %i[index show destroy] do
+      resources :rooms, shallow: true, only: %i[index show create]
+    end
     resources :occupation_main_categories, only: :index
     resources :industry_categories, only: :index
     resources :prefectures, only: :index
@@ -25,7 +27,9 @@ Rails.application.routes.draw do
   namespace :enterprise do
     namespace :v1 do
       resources :employees, only: %i[show destroy]
-      resources :companies
+      resources :companies do
+        resources :rooms, shallow: true, only: %i[index show create]
+      end
       resources :occupation_main_categories, only: :index
       resources :industry_categories, only: :index
       resources :prefectures, only: :index
