@@ -16,5 +16,6 @@ class Ability
     can :read, Prefecture
     can :read, EmploymentStatus
     can [:read, :create], Room, account: { id: account.id }
+    can [:read, :create], Message, room: { account_id: account.id }
   end
 end

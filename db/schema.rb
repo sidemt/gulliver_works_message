@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_115646) do
+ActiveRecord::Schema.define(version: 2021_05_13_044811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -87,6 +87,18 @@ ActiveRecord::Schema.define(version: 2021_05_09_115646) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "メッセージ", force: :cascade do |t|
+    t.string "content", comment: "内容"
+    t.uuid "room_id"
+    t.uuid "account_id"
+    t.uuid "employee_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_messages_on_account_id"
+    t.index ["employee_id"], name: "index_messages_on_employee_id"
+    t.index ["room_id"], name: "index_messages_on_room_id"
+  end
+
   create_table "occupation_main_categories", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "職種「大項目」", force: :cascade do |t|
     t.string "name", null: false, comment: "職種「大項目」名"
     t.datetime "created_at", precision: 6, null: false
@@ -131,6 +143,9 @@ ActiveRecord::Schema.define(version: 2021_05_09_115646) do
 
   add_foreign_key "employees", "companies"
   add_foreign_key "industries", "industry_categories"
+  add_foreign_key "messages", "accounts"
+  add_foreign_key "messages", "employees"
+  add_foreign_key "messages", "rooms"
   add_foreign_key "occupation_sub_categories", "occupation_main_categories"
   add_foreign_key "occupations", "occupation_sub_categories"
   add_foreign_key "rooms", "accounts"
